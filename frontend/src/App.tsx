@@ -22,6 +22,7 @@ function App() {
         .then((data) => {
           setAccess(true);
           setQuestions(data.questions);
+          Aria_Hidden=[false]
           for (let i = 1; i < Questions.length; i++) {
             Aria_Hidden.push(false);
           }
@@ -55,6 +56,7 @@ function App() {
           <div className="FAQ">
             {Questions.map((question: Question, id: number) => {
               return (
+                <>
                 <Header
                   key={id}
                   question={question}
@@ -62,10 +64,13 @@ function App() {
                   Aria_Hidden={Aria_Hidden_Array[id]}
                   toggleView={toggleView}
                 />
+                
+                </>
               );
             })}
             <div className="FAQ-header">
               <textarea
+                placeholder="Type in a Question here and press enter"
                 value={value}
                 style={{
                   width: "100%",
@@ -82,17 +87,8 @@ function App() {
                       subheadings: [],
                       ids: [],
                     };
-                    Questions.push(ModifiedQuestions)
-                    modifyQuestions(Questions)
-                      .then((data) => {
-                        getQuestions().then((data) => {
-                          setQuestions(data.questions);
-                        });
-                      })
-                      .catch((err) => {
-                        console.log(err);
-                      });
-                    setValue("")
+                    Questions.push(ModifiedQuestions);
+                    setValue("");
                   }
                 }}
               />

@@ -32,7 +32,6 @@ body {
   position: relative;
   display: block;
   text-align: left;
-  width: 100%;
   color: #7288a2;
   font-size: 1.15rem;
   font-weight: 400;
@@ -116,4 +115,12 @@ body {
 .FAQ-subheader {
   padding-left: 33%;
   padding-right: 5%;
+}
+.FAQ .FAQ-subheader .modify {
+  padding-left: 0%;
+  padding-right: 0%;
+}
+.FAQ .FAQ-subheader .delete {
+  padding-left: 0%;
+  padding-right: 0%;
 }
