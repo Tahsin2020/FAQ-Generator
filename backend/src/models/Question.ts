@@ -6,7 +6,7 @@ const QuestionSchema = new mongoose.Schema({
   heading: {
     type: String,
     required: true,
-    unique: true,
+    // unique: true,
   },
   subheadings: [
     {

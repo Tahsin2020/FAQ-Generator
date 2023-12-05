@@ -1,47 +1,42 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
+import { getQuestions, modifyQuestions } from "./helpers/api-communicator";
+import toast from "react-hot-toast";
+import { Question } from "./types/types";
+import Header from "./components/Header";
+import Button from "@mui/material/Button";
 
 function App() {
-  var QA = [
-    {
-      Heading: "Why is the moon sometimes out during the day?",
-      Subheading: [
-        "abcdefghijklmnopqrstvwxyzABCDEFGHIJKLMOPQRSTUVWXYZ012345679abcdefghijklmnopqrstvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
-      ],
-    },
-    {
-      Heading:
-        "abcdefghijklmnopqrstvwxyzABCDEFGHIJKLMOPQRSTUVWXYZ012345679abcdef dzd asdas asd asd as dsa adsd as das dasghijklmnopqrstvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
-      Subheading: [
-        "abcdefghijklmnopqrst uvwxyzABCDEFGHIJKLM NOPQRSTUVWXYZ012345678 9abcdefghijklmnopqrstu vwxyzABCDEFGHIJKLMNOPQR STUVWXYZ0123456789",
-      ],
-    },
-    {
-      Heading:
-        "asdasd asd as das asd as dasd asd as dasd asd as asdas asd as das das das ddas asdasd asd as das asd as dasd asd as dasd asd as asdas asd as das das das ddas",
-      Subheading: [
-        "abcdefghijklmnopqrst uvwxyzABCDEFGHIJKLM NOPQRSTUVWXYZ012345678 9abcdefghijklmnopqrstu vwxyzABCDEFGHIJKLMNOPQR STUVWXYZ0123456789",
-      ],
-    },
-    {
-      Heading: "ad asdasasd asd asd asd as ds",
-      Subheading: [
-        "abcdefghijklmnopqrst uvwxyzABCDEFGHIJKLM NOPQRSTUVWXYZ012345678 9abcdefghijklmnopqrstu vwxyzABCDEFGHIJKLMNOPQR STUVWXYZ0123456789",
-        "abcdefghijklmnopqrst uvwxyzABCDEFGHIJKLM NOPQRSTUVWXYZ012345678 9abcdefghijklmnopqrstu vwxyzABCDEFGHIJKLMNOPQR STUVWXYZ0123456789",
-        "abcdefghijklmnopqrst uvwxyzABCDEFGHIJKLM NOPQRSTUVWXYZ012345678 9abcdefghijklmnopqrstu vwxyzABCDEFGHIJKLMNOPQR STUVWXYZ0123456789",
-      ],
-    },
-  ];
+  const [value, setValue] = useState("");
   var Aria_Hidden = [false];
+  const [access, setAccess] = useState(false);
+  const [Questions, setQuestions] = useState<any>([]);
 
-  for (let i = 1; i < QA.length; i++) {
-    Aria_Hidden.push(false);
+  function UpdatePage() {
+    modifyQuestions(Questions);
   }
+
+  useEffect(() => {
+    if (!access)
+      getQuestions()
+        .then((data) => {
+          setAccess(true);
+          setQuestions(data.questions);
+          for (let i = 1; i < Questions.length; i++) {
+            Aria_Hidden.push(false);
+          }
+          toast.success("Successfully loaded chats", { id: "loadchats" });
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error("Loading Failed", { id: "loadchats" });
+        });
+  }, []);
 
   const [Aria_Hidden_Array, setAria_Hidden_Array] = useState(Aria_Hidden);
 
   function toggleView(id: number) {
-    for (let i = 0; i < QA.length; i++) {
+    for (let i = 0; i < Questions.length; i++) {
       if (id == i) Aria_Hidden[i] = true;
       else Aria_Hidden[i] = false;
     }
@@ -54,27 +49,68 @@ function App() {
     <>
       <div className="container">
         <h2>Frequently Asked Questions</h2>
-        <div className="FAQ">
-          {QA.map((item, id) => {
-            return (
-              <div className="FAQ-header" key={id}>
-                <button
-                  id={"FAQ-button-" + id}
-                  aria-expanded={Aria_Hidden_Array[id]}
-                  style={{ display: "flex", flexDirection: "row" }}
-                  onClick={() => toggleView(id)}
-                >
-                  <div className="FAQ-title">{item.Heading}</div>
-                  <div className="icon" aria-hidden="true"></div>
-                </button>
-                <div className="FAQ-subheaders">
-                  {item.Subheading.map((item) => {
-                    return <p className="FAQ-subheader"> {item}</p>;
-                  })}
-                </div>
-              </div>
-            );
-          })}
+        {!access ? (
+          <>The questions haven't been loaded yet.</>
+        ) : (
+          <div className="FAQ">
+            {Questions.map((question: Question, id: number) => {
+              return (
+                <Header
+                  key={id}
+                  question={question}
+                  id={id}
+                  Aria_Hidden={Aria_Hidden_Array[id]}
+                  toggleView={toggleView}
+                />
+              );
+            })}
+            <div className="FAQ-header">
+              <textarea
+                value={value}
+                style={{
+                  width: "100%",
+                  height: "20vh",
+                }}
+                onChange={(e) => {
+                  setValue(e.target.value);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    var ModifiedQuestions = {
+                      _id: "",
+                      heading: value,
+                      subheadings: [],
+                      ids: [],
+                    };
+                    Questions.push(ModifiedQuestions)
+                    modifyQuestions(Questions)
+                      .then((data) => {
+                        getQuestions().then((data) => {
+                          setQuestions(data.questions);
+                        });
+                      })
+                      .catch((err) => {
+                        console.log(err);
+                      });
+                    setValue("")
+                  }
+                }}
+              />
+            </div>
+          </div>
+        )}
+        <div
+          style={{
+            marginTop: "10vh",
+            marginLeft: "25w",
+            display: "flex",
+            alignContent: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Button variant="contained" onClick={UpdatePage}>
+            Save Page
+          </Button>
         </div>
       </div>
     </>

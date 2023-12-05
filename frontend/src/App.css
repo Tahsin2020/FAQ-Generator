@@ -21,9 +21,11 @@ body {
   max-width: 96rem;
 }
 .FAQ .FAQ-header {
+  width: 100%;
   border-bottom: 1px solid #e5e5e5;
 }
 .FAQ .FAQ-header button[aria-expanded="true"] {
+  width: 100%;
   border-bottom: 1px solid #03b5d2;
 }
 .FAQ button {
@@ -51,7 +53,7 @@ body {
 }
 .FAQ button .FAQ-title {
   margin-right: 5vw;
-  max-width: 85vw;
+  min-width: 85vw;
   overflow: hidden;
   padding: 1em 1.5em 1em 0;
 }
@@ -94,7 +96,6 @@ body {
 }
 .FAQ button[aria-expanded="true"] + .FAQ-subheaders {
   opacity: 1;
-  min-height: 9em;
   max-height: fit-content;
   transition: all 200ms linear;
   will-change: opacity, max-height;
@@ -113,6 +114,6 @@ body {
   margin: 2em 0;
 }
 .FAQ-subheader {
-  padding-left: 25%;
+  padding-left: 33%;
   padding-right: 5%;
 }

@@ -29,12 +29,19 @@ export const modifyQuestions = async (
     //user token check
     const questions = await Question.find();
 
-    questions.splice(0, questions.length);
-
-    for (let i = 0; i < Modifiedquestions.length; i++) {
-      questions.push(Modifiedquestions[i]);
+    for (let i = 0; i < questions.length; i++) {
+      questions[i].deleteOne();
     }
 
+    console.log(Modifiedquestions)
+    for (let i = 0; i < Modifiedquestions.length; i++) {
+      var newquestion = new Question({
+        heading: Modifiedquestions[i].heading,
+        subheadings: Modifiedquestions[i].subheadings,
+        ids: Modifiedquestions[i].ids,
+      });
+      await newquestion.save();
+    }
 
     return res.status(200).json({ message: "OK" });
   } catch (error) {
