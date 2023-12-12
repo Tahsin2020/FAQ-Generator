@@ -1,19 +1,18 @@
 import { NextFunction, Request, Response } from "express";
-import Question from "../models/Question.js";
 import Page from "../models/Page.js";
 
 // Get all questions
-export const getQuestions = async (
+export const getPages = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const { title } = req.body;
   try {
     //gets the profile
-    const page = await Page.findOne({ title: title });
+    const pages = await Page.find();
+    console.log("HI");
 
-    return res.status(200).json({ message: "OK", questions: page.questions });
+    return res.status(200).json({ message: "OK", pages: pages });
   } catch (error) {
     console.log(error);
     return res.status(200).json({ message: "ERROR", cause: error.message });
@@ -21,18 +20,16 @@ export const getQuestions = async (
 };
 
 // Modify/Delete the question collection
-export const modifyQuestions = async (
+export const addPage = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const { Modifiedquestions, title } = req.body;
+  const { title } = req.body;
   try {
-    const page = await Page.findOne({ title: title });
-    //user token check
-    page.questions = Modifiedquestions;
-
-    await page.save();
+    //gets the profile
+    const publicprofile = new Page({ title });
+    await publicprofile.save();
 
     return res.status(200).json({ message: "OK" });
   } catch (error) {

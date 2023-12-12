@@ -6,19 +6,30 @@ type Props = {
   id: number;
   Aria_Hidden: boolean;
   toggleView: (id: number) => void;
+  DeleteHeading: (id: number) => void;
+  ModifyHeading: (id: number, value: String) => void;
 };
 
-const Header = ({ question, id, Aria_Hidden, toggleView }: Props) => {
+const Header = ({
+  question,
+  id,
+  Aria_Hidden,
+  toggleView,
+  DeleteHeading,
+  ModifyHeading,
+}: Props) => {
+  const [modifyHeadervalue, setmodifyHeaderValue] = useState<string>("");
+  const [modifyingHeader, setModifyingHeader] = useState<boolean>(false);
   const [modifying, setModifying] = useState<number | undefined>(undefined);
   const [modifyvalue, setmodifyValue] = useState<string>("");
   const [value, setValue] = useState("");
 
-  const Delete = (id: number) => {
+  const DeleteSubHeading = (id: number) => {
     question.subheadings.splice(id, 1);
     toggleView(id);
   };
 
-  const Modify = (id: number) => {
+  const ModifySubheading = (id: number) => {
     setmodifyValue(question.subheadings[id].toString());
     setModifying(id);
   };
@@ -31,14 +42,54 @@ const Header = ({ question, id, Aria_Hidden, toggleView }: Props) => {
         style={{ display: "flex", flexDirection: "row" }}
         onClick={() => toggleView(id)}
       >
-        <div className="FAQ-title">{question.heading}</div>
+        {modifyingHeader ? (
+          <textarea
+            placeholder="Change Header here and press enter"
+            value={modifyHeadervalue}
+            style={{
+              width: "70vw",
+              height: "10vh",
+              marginTop: "3vh",
+            }}
+            onChange={(e) => {
+              setmodifyHeaderValue(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                ModifyHeading(id, modifyHeadervalue);
+                setmodifyHeaderValue("");
+                setModifyingHeader(false);
+              }
+            }}
+          />
+        ) : (
+          <div className="FAQ-title">{question.heading}</div>
+        )}
+
+        <button
+          className="icon ml"
+          onClick={() => {
+            setmodifyHeaderValue(question.heading.toString());
+            setModifyingHeader(true);
+          }}
+        >
+          Modify
+        </button>
+        <button
+          className="icon mr"
+          onClick={() => {
+            DeleteHeading(id);
+          }}
+        >
+          Delete
+        </button>
         <div className="icon" aria-hidden="true"></div>
       </button>
       <div className="FAQ-subheaders">
         {question?.subheadings.map((subheading, id: number) => {
           if (modifying == id)
             return (
-              <p className="FAQ-subheader">
+              <p className="FAQ-subheader" key={id}>
                 <textarea
                   placeholder="Change Text here and press enter"
                   value={modifyvalue}
@@ -65,20 +116,20 @@ const Header = ({ question, id, Aria_Hidden, toggleView }: Props) => {
                 {subheading}
               </p>
               <button
-                className="delete"
-                onClick={() => {
-                  Delete(id);
-                }}
-              >
-                Delete
-              </button>
-              <button
                 className="modify"
                 onClick={() => {
-                  Modify(id);
+                  ModifySubheading(id);
                 }}
               >
                 Modify
+              </button>
+              <button
+                className="delete"
+                onClick={() => {
+                  DeleteSubHeading(id);
+                }}
+              >
+                Delete
               </button>
             </div>
           );

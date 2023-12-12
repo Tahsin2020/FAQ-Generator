@@ -1,24 +1,15 @@
 import mongoose from "mongoose";
+import QuestionSchema from "./Question.js";
 
 // I have to change what's inside these objects/schemas. I don't think I need chatschema, but I am wondering about skills.
 
-const QuestionSchema = new mongoose.Schema({
-  heading: {
+const PageSchema = new mongoose.Schema({
+  title: {
     type: String,
     required: true,
     unique: true,
   },
-  subheadings: [
-    {
-      type: String,
-      unique: true,
-    },
-  ],
-  ids: [
-    {
-      type: Number,
-    },
-  ],
+  questions: [QuestionSchema],
 });
 
-export default QuestionSchema;
+export default mongoose.model("Page", PageSchema);

@@ -3,7 +3,7 @@ import { getQuestions, modifyQuestions } from "../controllers/question-controlle
 
 const questionRoutes = Router();
 
-questionRoutes.get("/", getQuestions);
+questionRoutes.post("/", getQuestions);
 questionRoutes.post("/modify", modifyQuestions);
 
 export default questionRoutes;

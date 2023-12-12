@@ -124,3 +124,27 @@ body {
   padding-left: 0%;
   padding-right: 0%;
 }
+
+.FAQ .FAQ-header button .mr {
+  margin-right: 8vw;
+  width: 0;
+  border: 0;
+}
+.FAQ .FAQ-header button .mr:before {
+  width: 0;
+}
+.FAQ .FAQ-header button .mr:after {
+  width: 0;
+}
+
+.FAQ .FAQ-header button .ml {
+  margin-right: 14vw;
+  width: 0;
+  border: 0;
+}
+.FAQ .FAQ-header button .ml:before {
+  width: 0;
+}
+.FAQ .FAQ-header button .ml:after {
+  width: 0;
+}
