@@ -35,7 +35,13 @@ const Header = ({
   };
 
   return (
-    <div className="FAQ-header" key={id} id={question?._id.toString()}>
+    // Must add code to automatically replace entered headers (with _) to a space
+    // Must also add code to remove duplicates.
+    <div
+      className="FAQ-header"
+      key={id}
+      id={question.heading.split(" ").join("_")}
+    >
       <button
         id={"FAQ-button-" + id}
         aria-expanded={Aria_Hidden}

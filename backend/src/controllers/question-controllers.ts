@@ -29,6 +29,8 @@ export const modifyQuestions = async (
   const { Modifiedquestions, title } = req.body;
   try {
     const page = await Page.findOne({ title: title });
+    console.log(Modifiedquestions);
+    console.log(title);
     //user token check
     page.questions = Modifiedquestions;
 

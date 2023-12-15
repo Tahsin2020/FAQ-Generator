@@ -65,7 +65,9 @@ function Questions() {
       <div className="container">
         <h2>Frequently Asked Questions</h2>
         {!access ? (
-          <>The questions haven't been loaded yet.</>
+          <div style={{ width: "90vw" }}>
+            The questions haven't been loaded yet.
+          </div>
         ) : (
           <div className="FAQ">
             {Questions.map((question: Question, id: number) => {
@@ -88,7 +90,7 @@ function Questions() {
                 placeholder="Type in a Question here and press enter"
                 value={value}
                 style={{
-                  width: "100%",
+                  width: "90vw",
                   height: "20vh",
                 }}
                 onChange={(e) => {
@@ -97,7 +99,6 @@ function Questions() {
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     var ModifiedQuestions = {
-                      _id: "",
                       heading: value,
                       subheadings: [],
                       ids: [],

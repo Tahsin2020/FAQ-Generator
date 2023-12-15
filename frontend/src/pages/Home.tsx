@@ -1,6 +1,7 @@
 import { Typography } from "@mui/material";
 import { getPages } from "../helpers/api-communicator";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const [pages, setPages] = useState<any[]>([]);
@@ -18,7 +19,34 @@ const Home = () => {
     <div style={{ margin: "10%", width: "85vw" }}>
       <Typography variant="h1">Username </Typography>
       {pages.map((page, id) => {
-        return <div>Pages</div>;
+        if (page.questions.length > 3) page.questions.length = 3;
+        return (
+          <div
+            style={{
+              border: "5px solid black",
+              width: "100%",
+              marginBottom: "10px",
+              backgroundColor: "black",
+            }}
+          >
+            <Link to={page.title}>
+              <Typography
+                variant="h2"
+                style={{ marginTop: "2vh", marginLeft: "2vw" }}
+              >
+                {page.title}
+              </Typography>
+            </Link>
+            <div style={{ marginLeft: "20vw" }}>
+              {page.questions.map((question: any, id: number) => {
+                return;
+                <Typography variant="h3" style={{ marginTop: "2vh" }}>
+                  {question.heading}
+                </Typography>;
+              })}
+            </div>
+          </div>
+        );
       })}
       <div
         style={{
