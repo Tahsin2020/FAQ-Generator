@@ -39,16 +39,18 @@ const Home = () => {
             </Link>
             <div style={{ marginLeft: "20vw" }}>
               {page.questions.map((question: any, id: number) => {
-                return;
-                <Typography variant="h3" style={{ marginTop: "2vh" }}>
-                  {question.heading}
-                </Typography>;
+                return (
+                  <Typography variant="h3" style={{ marginTop: "2vh" }}>
+                    {" "}
+                    {question.heading}{" "}
+                  </Typography>
+                );
               })}
             </div>
           </div>
         );
       })}
-      <div
+      {/* <div
         style={{
           border: "5px solid black",
           width: "100%",
@@ -136,7 +138,7 @@ const Home = () => {
             Question
           </Typography>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
