@@ -9,6 +9,7 @@ import Button from "@mui/material/Button";
 let title = location.pathname.split("/").join("").split("%20").join(" ");
 
 console.log(title);
+console.log(location.pathname);
 
 function Questions() {
   const [value, setValue] = useState("");
@@ -64,9 +65,10 @@ function Questions() {
     <>
       <div className="container">
         <h2>Frequently Asked Questions</h2>
-        {!access ? (
+        {!Questions ? (
           <div style={{ width: "90vw" }}>
-            The questions haven't been loaded yet.
+            The page hasn't loaded yet. If they haven't loaded even after
+            waiting a minute, reload the page or check your url.
           </div>
         ) : (
           <div className="FAQ">
@@ -111,19 +113,23 @@ function Questions() {
             </div>
           </div>
         )}
-        <div
-          style={{
-            marginTop: "10vh",
-            marginLeft: "25w",
-            display: "flex",
-            alignContent: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Button variant="contained" onClick={UpdatePage}>
-            Save Page
-          </Button>
-        </div>
+        {!Questions ? (
+          <></>
+        ) : (
+          <div
+            style={{
+              marginTop: "10vh",
+              marginLeft: "25w",
+              display: "flex",
+              alignContent: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Button variant="contained" onClick={UpdatePage}>
+              Save Page
+            </Button>
+          </div>
+        )}
       </div>
     </>
   );

@@ -6,8 +6,6 @@ import QuestionSchema from "./Question.js";
 const PageSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: true,
-    unique: true,
   },
   questions: [QuestionSchema],
 });

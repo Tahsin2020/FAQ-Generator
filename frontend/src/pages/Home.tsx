@@ -1,23 +1,28 @@
 import { Typography } from "@mui/material";
-import { getPages } from "../helpers/api-communicator";
+import { addPage, getPages } from "../helpers/api-communicator";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const Home = () => {
+  const [value, setValue] = useState("");
   const [pages, setPages] = useState<any[]>([]);
   useEffect(() => {
     getPages()
       .then((data) => {
-        console.log(data);
         setPages(data.pages);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
+  const InsertPage = (value: string) => {
+    addPage(value);
+    pages.push({ title: value, questions: [] });
+    setValue("");
+  };
   return (
     <div style={{ margin: "10%", width: "85vw" }}>
-      <Typography variant="h1">Username </Typography>
+      <Typography variant="h1">Your List of Pages </Typography>
       {pages.map((page, id) => {
         if (page.questions.length > 3) page.questions.length = 3;
         return (
@@ -28,6 +33,7 @@ const Home = () => {
               marginBottom: "10px",
               backgroundColor: "black",
             }}
+            key={id}
           >
             <Link to={page.title}>
               <Typography
@@ -40,7 +46,11 @@ const Home = () => {
             <div style={{ marginLeft: "20vw" }}>
               {page.questions.map((question: any, id: number) => {
                 return (
-                  <Typography variant="h3" style={{ marginTop: "2vh" }}>
+                  <Typography
+                    variant="h3"
+                    style={{ marginTop: "2vh" }}
+                    key={id}
+                  >
                     {" "}
                     {question.heading}{" "}
                   </Typography>
@@ -50,6 +60,40 @@ const Home = () => {
           </div>
         );
       })}
+      <div
+        style={{
+          border: "5px solid black",
+          width: "100%",
+          marginBottom: "10px",
+          backgroundColor: "black",
+        }}
+      >
+        <Typography
+          variant="h2"
+          style={{ marginTop: "2vh", marginLeft: "2vw" }}
+        >
+          <textarea
+            style={{ fontSize: "1em", width: "80vw", height: "15vh" }}
+            value={value}
+            placeholder="Insert title for new page"
+            onChange={(e) => {
+              setValue(e.target.value);
+            }}
+          />
+        </Typography>
+        <div style={{ marginLeft: "20vw" }}>
+          <Typography variant="h3" style={{ marginTop: "2vh" }}>
+            <button
+              style={{ fontSize: "0.75em" }}
+              onClick={() => {
+                InsertPage(value);
+              }}
+            >
+              Create new page
+            </button>
+          </Typography>
+        </div>
+      </div>
       {/* <div
         style={{
           border: "5px solid black",

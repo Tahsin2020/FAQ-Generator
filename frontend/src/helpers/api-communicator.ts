@@ -8,9 +8,18 @@ export const getPages = async () => {
   const data = await res.data;
   return data;
 };
+export const addPage = async (title: String) => {
+  const res = await axios.post("/page/add", {
+    title,
+  });
+  if (res.status !== 200) {
+    throw new Error("Unable to add page");
+  }
+  const data = await res.data;
+  return data;
+};
 
-export const getQuestions = async (title:String) => {
-  
+export const getQuestions = async (title: String) => {
   const res = await axios.post("/page/question/", {
     title,
   });
@@ -21,7 +30,10 @@ export const getQuestions = async (title:String) => {
   return data;
 };
 
-export const modifyQuestions = async (title:String,Modifiedquestions: any) => {
+export const modifyQuestions = async (
+  title: String,
+  Modifiedquestions: any
+) => {
   const res = await axios.post("/page/question/modify", {
     title,
     Modifiedquestions,

@@ -5,13 +5,10 @@ import mongoose from "mongoose";
 const QuestionSchema = new mongoose.Schema({
   heading: {
     type: String,
-    required: true,
-    unique: true,
   },
   subheadings: [
     {
       type: String,
-      unique: true,
     },
   ],
   ids: [

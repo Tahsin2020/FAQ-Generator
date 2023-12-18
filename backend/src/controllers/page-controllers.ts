@@ -10,7 +10,6 @@ export const getPages = async (
   try {
     //gets the profile
     const pages = await Page.find();
-    console.log("HI");
 
     return res.status(200).json({ message: "OK", pages: pages });
   } catch (error) {
@@ -28,7 +27,7 @@ export const addPage = async (
   const { title } = req.body;
   try {
     //gets the profile
-    const publicprofile = new Page({ title });
+    const publicprofile = new Page({ title, questions: [] });
     await publicprofile.save();
 
     return res.status(200).json({ message: "OK" });
