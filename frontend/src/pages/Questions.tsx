@@ -6,12 +6,12 @@ import { Question } from "../types/types";
 import Header from "../components/Header";
 import Button from "@mui/material/Button";
 
-let title = location.pathname.split("/").join("").split("%20").join(" ");
-
-console.log(title);
-console.log(location.pathname);
-
 function Questions() {
+  let title = location.pathname.split("/").join("").split("%20").join(" ");
+
+  console.log(title);
+  console.log(location.pathname);
+
   const [value, setValue] = useState("");
   var Aria_Hidden = [false];
   const [access, setAccess] = useState(false);
@@ -32,6 +32,11 @@ function Questions() {
   };
 
   useEffect(() => {
+    window.onbeforeunload = confirmExit;
+    function confirmExit() {
+      return "show warning";
+    }
+
     if (!access)
       getQuestions(title)
         .then((data) => {

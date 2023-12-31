@@ -8,6 +8,7 @@ export const getPages = async () => {
   const data = await res.data;
   return data;
 };
+
 export const addPage = async (title: String) => {
   const res = await axios.post("/page/add", {
     title,

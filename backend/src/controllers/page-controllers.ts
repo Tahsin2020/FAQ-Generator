@@ -36,3 +36,23 @@ export const addPage = async (
     return res.status(200).json({ message: "ERROR", cause: error.message });
   }
 };
+
+// Get all questions
+export const deletePage = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { title } = req.body;
+  try {
+    //gets the profile
+    const page = await Page.findOne({ title: title });
+
+    page.deleteOne();
+
+    return res.status(200).json({ message: "OK" });
+  } catch (error) {
+    console.log(error);
+    return res.status(200).json({ message: "ERROR", cause: error.message });
+  }
+};
