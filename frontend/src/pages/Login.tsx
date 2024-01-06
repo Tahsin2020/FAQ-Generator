@@ -22,7 +22,7 @@ const Login = () => {
   };
   useEffect(() => {
     if (auth?.user) {
-      return navigate("/Tahsin Hasan");
+      return navigate("/user/Tahsin Hasan/");
     }
   }, [auth]);
   return (

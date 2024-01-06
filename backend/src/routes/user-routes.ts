@@ -12,7 +12,7 @@ import {
   validate,
 } from "../utils/validators.js";
 import { verifyToken } from "../utils/token-manager.js";
-import pageRoutes from "./page-routes.js";
+
 // I have to write my routes here.
 
 const userRouter = Router();

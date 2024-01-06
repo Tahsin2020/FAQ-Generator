@@ -27,6 +27,7 @@ export const userSignup = async (
   try {
     //user signup
     const { username, email, password } = req.body;
+    console.log(username, email, password);
     const existingUser = await User.findOne({ email });
     if (existingUser) return res.status(401).send("User already registered");
     const hashedPassword = await hash(password, 10);

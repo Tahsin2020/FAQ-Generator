@@ -3,6 +3,7 @@ import Questions from "./pages/Questions";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Sidebar from "./components/Sidebar";
 
 /* Notes: Add 2 checks in Username and Page, if the Username or Page is invalid, give the NotFound page.
           Access the Username from the url, for both the page and the literal page.
@@ -14,6 +15,7 @@ import Signup from "./pages/Signup";
 function App() {
   return (
     <>
+      <Sidebar />
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<Signup />} />

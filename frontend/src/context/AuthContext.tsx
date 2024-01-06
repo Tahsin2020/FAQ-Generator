@@ -13,14 +13,14 @@ import {
 } from "../helpers/api-communicator";
 
 type User = {
-  name: string;
+  username: string;
   email: string;
 };
 type UserAuth = {
   isLoggedIn: boolean;
   user: User | null;
   login: (email: string, password: string) => Promise<void>;
-  signup: (name: string, email: string, password: string) => Promise<void>;
+  signup: (username: string, email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 };
 const AuthContext = createContext<UserAuth | null>(null);
@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     async function checkStatus() {
       const data = await checkAuthStatus();
       if (data) {
-        setUser({ email: data.email, name: data.name });
+        setUser({ email: data.email, username: data.username });
         setIsLoggedIn(true);
       }
     }
@@ -43,14 +43,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = async (email: string, password: string) => {
     const data = await loginUser(email, password);
     if (data) {
-      setUser({ email: data.email, name: data.name });
+      setUser({ email: data.email, username: data.username });
       setIsLoggedIn(true);
     }
   };
-  const signup = async (name: string, email: string, password: string) => {
-    const data = await signupUser(name, email, password);
+  const signup = async (username: string, email: string, password: string) => {
+    const data = await signupUser(username, email, password);
+    console.log(username, email, password);
     if (data) {
-      setUser({ email: data.email, name: data.name });
+      setUser({ email: data.email, username: data.username });
       setIsLoggedIn(true);
     }
   };
