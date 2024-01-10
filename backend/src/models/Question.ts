@@ -11,11 +11,6 @@ const QuestionSchema = new mongoose.Schema({
       type: String,
     },
   ],
-  ids: [
-    {
-      type: Number,
-    },
-  ],
 });
 
 export default QuestionSchema;

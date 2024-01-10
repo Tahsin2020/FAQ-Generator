@@ -10,4 +10,4 @@ const PageSchema = new mongoose.Schema({
   questions: [QuestionSchema],
 });
 
-export default mongoose.model("Page", PageSchema);
+export default PageSchema;

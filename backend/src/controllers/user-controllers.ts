@@ -3,21 +3,7 @@ import User from "../models/User.js";
 import { hash, compare } from "bcrypt";
 import { createToken } from "../utils/token-manager.js";
 import { COOKIE_NAME } from "../utils/constant.js";
-
-export const getAllUsers = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    //get all users
-    const users = await User.find();
-    return res.status(200).json({ message: "OK", users });
-  } catch (error) {
-    console.log(error);
-    return res.status(200).json({ message: "ERROR", cause: error.message });
-  }
-};
+import PageSet from "../models/PageSet.js";
 
 export const userSignup = async (
   req: Request,
@@ -27,12 +13,16 @@ export const userSignup = async (
   try {
     //user signup
     const { username, email, password } = req.body;
-    console.log(username, email, password);
+
     const existingUser = await User.findOne({ email });
     if (existingUser) return res.status(401).send("User already registered");
     const hashedPassword = await hash(password, 10);
+
     const user = new User({ username, email, password: hashedPassword });
     await user.save();
+
+    const pageset = new PageSet({ username });
+    await pageset.save();
 
     // create token and store cookie
     res.clearCookie(COOKIE_NAME, {
@@ -44,6 +34,7 @@ export const userSignup = async (
 
     const token = createToken(user._id.toString(), user.email, "7d");
     const expires = new Date();
+
     expires.setDate(expires.getDate() + 7);
     res.cookie(COOKIE_NAME, token, {
       path: "/",

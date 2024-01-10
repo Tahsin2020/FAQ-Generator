@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import Question from "../models/Question.js";
-import Page from "../models/Page.js";
+import PageSet from "../models/PageSet.js";
 
 // Get all questions
 export const getQuestions = async (
@@ -8,12 +8,20 @@ export const getQuestions = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { title } = req.body;
+  const { username, title } = req.body;
   try {
-    //gets the profile
-    const page = await Page.findOne({ title: title });
+    const pageset = await PageSet.findOne({ username: username });
+    const pages = pageset.pages;
 
-    return res.status(200).json({ message: "OK", questions: page.questions });
+    for (let i = 0; i < pages.length; i++) {
+      if (pages[i].title == title) {
+        return res
+          .status(200)
+          .json({ message: "OK", questions: pages[i].questions });
+      }
+    }
+
+    return res.status(404).json({ message: "No Page Found" });
   } catch (error) {
     console.log(error);
     return res.status(200).json({ message: "ERROR", cause: error.message });
@@ -26,17 +34,23 @@ export const modifyQuestions = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { Modifiedquestions, title } = req.body;
+  const { username, Modifiedquestions, title } = req.body;
   try {
-    const page = await Page.findOne({ title: title });
-    console.log(Modifiedquestions);
-    console.log(title);
-    //user token check
-    page.questions = Modifiedquestions;
+    const pageset = await PageSet.findOne({ username: username });
+    const pages = pageset.pages;
 
-    await page.save();
+    for (let i = 0; i < pages.length; i++) {
+      if (pages[i].title == title) {
+        pages[i].questions = Modifiedquestions;
+        await pageset.save();
 
-    return res.status(200).json({ message: "OK" });
+        return res
+          .status(200)
+          .json({ message: "OK", questions: pages[i].questions });
+      }
+    }
+
+    return res.status(404).json({ message: "No Item Found" });
   } catch (error) {
     console.log(error);
     return res.status(200).json({ message: "ERROR", cause: error.message });

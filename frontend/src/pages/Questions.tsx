@@ -7,7 +7,9 @@ import Header from "../components/Header";
 import Button from "@mui/material/Button";
 
 function Questions() {
-  let title = location.pathname.split("/").join("").split("%20").join(" ");
+  let url = location.pathname.split("/");
+
+  let title = url[3].split("%20").join(" ");
 
   console.log(title);
   console.log(location.pathname);

@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import Page from "../models/Page.js";
+import PageSet from "../models/PageSet.js";
 
 // Get all questions
 export const getPages = async (
@@ -7,9 +8,12 @@ export const getPages = async (
   res: Response,
   next: NextFunction
 ) => {
+  const { username } = req.body;
   try {
     //gets the profile
-    const pages = await Page.find();
+    const pageset = await PageSet.findOne({ username: username });
+
+    const pages = pageset.pages;
 
     return res.status(200).json({ message: "OK", pages: pages });
   } catch (error) {
@@ -24,11 +28,15 @@ export const addPage = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { title } = req.body;
+  const { username, title } = req.body;
   try {
     //gets the profile
-    const publicprofile = new Page({ title, questions: [] });
-    await publicprofile.save();
+    const pageset = await PageSet.findOne({ username: username });
+    const page = { title: title, questions: [] };
+
+    pageset.pages.push(page);
+
+    await pageset.save();
 
     return res.status(200).json({ message: "OK" });
   } catch (error) {
@@ -43,12 +51,22 @@ export const deletePage = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { title } = req.body;
+  const { username, title } = req.body;
   try {
     //gets the profile
-    const page = await Page.findOne({ title: title });
+    const pageset = await PageSet.findOne({ username: username });
+    const pages = pageset.pages;
 
-    page.deleteOne();
+    for (let i = 0; i < pages.length; i++) {
+      if (pages[i].title == title) {
+        pages.splice(i, 1);
+        break;
+      }
+    }
+
+    pageset.save();
+
+    // page.deleteOne();
 
     return res.status(200).json({ message: "OK" });
   } catch (error) {
