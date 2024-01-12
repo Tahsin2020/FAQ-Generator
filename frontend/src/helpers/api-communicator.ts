@@ -66,7 +66,7 @@ export const logoutUser = async () => {
   return data;
 };
 export const getPages = async () => {
-  const res = await axios.get("/page/");
+  const res = await axios.get("/pageset/");
   if (res.status !== 200) {
     throw new Error("Unable to access questions");
   }

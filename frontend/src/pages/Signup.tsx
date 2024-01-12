@@ -30,13 +30,13 @@ const Signup = () => {
   return (
     <div className="body">
       <div className="wrapper">
-        <h2>Registration</h2>
+        <h2>Sign Up</h2>
         <form action="#" onSubmit={handleSubmit}>
           <div className="input-box">
             <input
               type="text"
               name="username"
-              placeholder="Enter your name"
+              placeholder="Enter your username"
               required
             />
           </div>
