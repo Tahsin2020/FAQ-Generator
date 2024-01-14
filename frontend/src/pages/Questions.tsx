@@ -8,8 +8,9 @@ import Button from "@mui/material/Button";
 
 function Questions() {
   let url = location.pathname.split("/");
+  let username = url[-2];
 
-  let title = url[3].split("%20").join(" ");
+  let title = url[-1];
 
   console.log(title);
   console.log(location.pathname);
@@ -20,7 +21,7 @@ function Questions() {
   const [Questions, setQuestions] = useState<any>([]);
 
   function UpdatePage() {
-    modifyQuestions(title, Questions);
+    modifyQuestions(title, Questions, username);
   }
 
   const DeleteHeading = (id: number) => {
@@ -40,7 +41,7 @@ function Questions() {
     }
 
     if (!access)
-      getQuestions(title)
+      getQuestions(title, username)
         .then((data) => {
           setAccess(true);
           setQuestions(data.questions);

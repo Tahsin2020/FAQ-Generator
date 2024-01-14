@@ -8,7 +8,7 @@ export const getPages = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { username } = req.body;
+  const { username } = req.params;
   try {
     //gets the profile
     const pageset = await PageSet.findOne({ username: username });
@@ -28,7 +28,8 @@ export const addPage = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { username, title } = req.body;
+  const { username } = req.params;
+  const { title } = req.body;
   try {
     //gets the profile
     const pageset = await PageSet.findOne({ username: username });
@@ -51,7 +52,8 @@ export const deletePage = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { username, title } = req.body;
+  const { username } = req.params;
+  const { title } = req.body;
   try {
     //gets the profile
     const pageset = await PageSet.findOne({ username: username });

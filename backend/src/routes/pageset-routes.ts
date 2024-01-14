@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { getPageSet } from "../controllers/pageset-controllers.js";
+import { getPageSetUsername } from "../controllers/pageset-controllers.js";
 import pageRoutes from "./page-routes.js";
 
 const pageSetRoutes = Router();
 
-pageSetRoutes.get("/", getPageSet);
+pageSetRoutes.get("/:username/", getPageSetUsername);
 
 pageSetRoutes.use("/page", pageRoutes);
 

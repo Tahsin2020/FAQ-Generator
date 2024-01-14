@@ -1,82 +1,166 @@
-import { Link } from "react-router-dom";
-import Earth from "../assets/Earth.png";
-import { useAuth } from "../context/AuthContext";
+import { useState } from "react";
+import { Question } from "../types/types";
 
-const Header = () => {
-  var values = useAuth();
+type Props = {
+  question: Question;
+  id: number;
+  Aria_Hidden: boolean;
+  toggleView: (id: number) => void;
+  DeleteHeading: (id: number) => void;
+  ModifyHeading: (id: number, value: String) => void;
+};
 
-  type Item = {
-    Link: any;
-    Title: String;
-    Click?: () => Promise<void>;
+const Header = ({
+  question,
+  id,
+  Aria_Hidden,
+  toggleView,
+  DeleteHeading,
+  ModifyHeading,
+}: Props) => {
+  const [modifyHeadervalue, setmodifyHeaderValue] = useState<string>("");
+  const [modifyingHeader, setModifyingHeader] = useState<boolean>(false);
+  const [modifying, setModifying] = useState<number | undefined>(undefined);
+  const [modifyvalue, setmodifyValue] = useState<string>("");
+  const [value, setValue] = useState("");
+
+  const DeleteSubHeading = (id: number) => {
+    question.subheadings.splice(id, 1);
+    toggleView(id);
   };
-  const LoggedInLinks = [
-    { Link: "/Tahsin Hasan", Title: "My Page" },
-    { Link: "/settings", Title: "Settings" },
-    { Link: "/login", Title: "Log out", Click: values?.logout },
-  ];
-  const LoggedOutLinks = [
-    { Link: "/signup", Title: "Sign Up" },
-    { Link: "/login", Title: "Login" },
-  ];
-  var Links = [{ Link: "/", Title: "Marketplace" }];
 
-  if (values?.isLoggedIn) {
-    Links = [...Links, ...LoggedInLinks];
-  } else {
-    Links = [...Links, ...LoggedOutLinks];
-  }
+  const ModifySubheading = (id: number) => {
+    setmodifyValue(question.subheadings[id].toString());
+    setModifying(id);
+  };
+
   return (
-    <nav className=" border-gray-200">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <Link to={"/"} className="flex items-center">
-          <img src={Earth} className="h-8 mr-3" alt="Website Logo" />
-          <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
-            Alliance for Projects
-          </span>
-        </Link>
+    // Must add code to automatically replace entered headers (with _) to a space
+    // Must also add code to remove duplicates.
+    <div
+      className="FAQ-header"
+      key={id}
+      id={question.heading.split(" ").join("_")}
+    >
+      <button
+        id={"FAQ-button-" + id}
+        aria-expanded={Aria_Hidden}
+        style={{ display: "flex", flexDirection: "row" }}
+        onClick={() => toggleView(id)}
+      >
+        {modifyingHeader ? (
+          <textarea
+            placeholder="Change Header here and press enter"
+            value={modifyHeadervalue}
+            style={{
+              width: "70vw",
+              height: "10vh",
+              marginTop: "3vh",
+            }}
+            onChange={(e) => {
+              setmodifyHeaderValue(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                ModifyHeading(id, modifyHeadervalue);
+                setmodifyHeaderValue("");
+                setModifyingHeader(false);
+              }
+            }}
+          />
+        ) : (
+          <div className="FAQ-title">{question.heading}</div>
+        )}
+
         <button
-          data-collapse-toggle="navbar-default"
-          type="button"
-          className="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-          aria-controls="navbar-default"
-          aria-expanded="false"
+          className="icon ml"
+          onClick={() => {
+            setmodifyHeaderValue(question.heading.toString());
+            setModifyingHeader(true);
+          }}
         >
-          <span className="sr-only">Open main menu</span>
-          <svg
-            className="w-6 h-6"
-            aria-hidden="true"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fillRule="evenodd"
-              d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-              clipRule="evenodd"
-            ></path>
-          </svg>
+          Modify
         </button>
-        <div
-          className="w-full md:block md:w-auto"
-          v-show="value1"
-          id="navbar-default"
+        <button
+          className="icon mr"
+          onClick={() => {
+            DeleteHeading(id);
+          }}
         >
-          <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0">
-            {Links.map((item: Item, key) => (
-              <Link
-                onClick={item?.Click}
-                to={item.Link}
-                key={key}
-                className="block py-2 pl-3 pr-4 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
+          Delete
+        </button>
+        <div className="icon" aria-hidden="true"></div>
+      </button>
+      <div className="FAQ-subheaders">
+        {question?.subheadings.map((subheading, id: number) => {
+          if (modifying == id)
+            return (
+              <p className="FAQ-subheader" key={id}>
+                <textarea
+                  placeholder="Change Text here and press enter"
+                  value={modifyvalue}
+                  style={{
+                    width: "100%",
+                    height: "20vh",
+                  }}
+                  onChange={(e) => {
+                    setmodifyValue(e.target.value);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      question.subheadings[id] = modifyvalue;
+                      setmodifyValue("");
+                      setModifying(undefined);
+                    }
+                  }}
+                />
+              </p>
+            );
+          return (
+            <div style={{ display: "flex" }}>
+              <p key={id} className="FAQ-subheader">
+                {subheading}
+              </p>
+              <button
+                className="modify"
+                onClick={() => {
+                  ModifySubheading(id);
+                }}
               >
-                {item.Title}
-              </Link>
-            ))}
-          </ul>
-        </div>
+                Modify
+              </button>
+              <button
+                className="delete"
+                onClick={() => {
+                  DeleteSubHeading(id);
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          );
+        })}
+        <p className="FAQ-subheader">
+          <textarea
+            placeholder="Type in an answer here to the above question and press enter"
+            value={value}
+            style={{
+              width: "100%",
+              height: "20vh",
+            }}
+            onChange={(e) => {
+              setValue(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                question.subheadings.push(value);
+                setValue("");
+              }
+            }}
+          />
+        </p>
       </div>
-    </nav>
+    </div>
   );
 };
 

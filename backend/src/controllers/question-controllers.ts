@@ -8,7 +8,7 @@ export const getQuestions = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { username, title } = req.body;
+  const { username, title } = req.params;
   try {
     const pageset = await PageSet.findOne({ username: username });
     const pages = pageset.pages;
@@ -34,7 +34,8 @@ export const modifyQuestions = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { username, Modifiedquestions, title } = req.body;
+  const { username } = req.params;
+  const { Modifiedquestions, title } = req.body;
   try {
     const pageset = await PageSet.findOne({ username: username });
     const pages = pageset.pages;

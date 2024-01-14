@@ -3,7 +3,7 @@ import Questions from "./pages/Questions";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import Header from "./components/Header";
+import Navbar from "./components/Navbar";
 
 /* Notes: Add 2 checks in Username and Page, if the Username or Page is invalid, give the NotFound page.
           Access the Username from the url, for both the page and the literal page.
@@ -15,12 +15,12 @@ import Header from "./components/Header";
 function App() {
   return (
     <>
-      <Header />
+      <Navbar />
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/user/:username/" element={<Home />} />
-        <Route path="/user/:username/:page" element={<Questions />} />
+        <Route path="/user/:username/:title" element={<Questions />} />
         <Route path="*" element={<>Not Found</>} />
       </Routes>
     </>

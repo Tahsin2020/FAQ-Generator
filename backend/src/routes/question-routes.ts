@@ -1,9 +1,12 @@
 import { Router } from "express";
-import { getQuestions, modifyQuestions } from "../controllers/question-controllers.js";
+import {
+  getQuestions,
+  modifyQuestions,
+} from "../controllers/question-controllers.js";
 
 const questionRoutes = Router();
 
-questionRoutes.get("/", getQuestions);
-questionRoutes.post("/modify", modifyQuestions);
+questionRoutes.get("/:username/:title/", getQuestions);
+questionRoutes.post("/modify/:username/", modifyQuestions);
 
 export default questionRoutes;

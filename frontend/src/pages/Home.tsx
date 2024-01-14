@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const Home = () => {
+  let url = location.pathname.split("/");
+  let username = url[-1];
   const [value, setValue] = useState("");
   const [pages, setPages] = useState<any[]>([]);
   useEffect(() => {
-    getPages()
+    getPages(username)
       .then((data) => {
         setPages(data.pages);
       })
@@ -16,7 +18,7 @@ const Home = () => {
       });
   }, []);
   const InsertPage = (value: string) => {
-    addPage(value);
+    addPage(value, username);
     pages.push({ title: value, questions: [] });
     setValue("");
   };

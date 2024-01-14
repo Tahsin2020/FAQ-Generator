@@ -15,7 +15,7 @@ export const signupUser = async (
 ) => {
   const res = await axios.post("/user/signup", { username, email, password });
   if (res.status !== 201) {
-    throw new Error("Unable to Signup");
+    throw new Error("Unable to sign up");
   }
   const data = await res.data;
   return data;
@@ -30,43 +30,17 @@ export const checkAuthStatus = async () => {
   return data;
 };
 
-export const sendChatRequest = async (message: string) => {
-  const res = await axios.post("/chat/new", { message });
-  if (res.status !== 200) {
-    throw new Error("Unable to send chat");
-  }
-  const data = await res.data;
-  return data;
-};
-
-export const getUserChats = async () => {
-  const res = await axios.get("/chat/all-chats");
-  if (res.status !== 200) {
-    throw new Error("Unable to send chat");
-  }
-  const data = await res.data;
-  return data;
-};
-
-export const deleteUserChats = async () => {
-  const res = await axios.delete("/chat/delete");
-  if (res.status !== 200) {
-    throw new Error("Unable to delete chats");
-  }
-  const data = await res.data;
-  return data;
-};
-
 export const logoutUser = async () => {
   const res = await axios.get("/user/logout");
   if (res.status !== 200) {
-    throw new Error("Unable to delete chats");
+    throw new Error("Unable to log out");
   }
   const data = await res.data;
   return data;
 };
-export const getPages = async () => {
-  const res = await axios.get("/pageset/");
+
+export const getPages = async (username: String) => {
+  const res = await axios.get("/pageset/page/" + username + "");
   if (res.status !== 200) {
     throw new Error("Unable to access questions");
   }
@@ -74,8 +48,8 @@ export const getPages = async () => {
   return data;
 };
 
-export const addPage = async (title: String) => {
-  const res = await axios.post("/page/add", {
+export const addPage = async (title: String, username: String) => {
+  const res = await axios.post("/pageset/page/add" + username + "", {
     title,
   });
   if (res.status !== 200) {
@@ -85,10 +59,10 @@ export const addPage = async (title: String) => {
   return data;
 };
 
-export const getQuestions = async (title: String) => {
-  const res = await axios.post("/page/question/", {
-    title,
-  });
+export const getQuestions = async (title: String, username: String) => {
+  const res = await axios.get(
+    "/pageset/page/question/" + username + "/" + title
+  );
   if (res.status !== 200) {
     throw new Error("Unable to access questions");
   }
@@ -98,12 +72,16 @@ export const getQuestions = async (title: String) => {
 
 export const modifyQuestions = async (
   title: String,
-  Modifiedquestions: any
+  Modifiedquestions: any,
+  username: String
 ) => {
-  const res = await axios.post("/page/question/modify", {
-    title,
-    Modifiedquestions,
-  });
+  const res = await axios.post(
+    "/pageset/page/question/modify" + username + "",
+    {
+      title,
+      Modifiedquestions,
+    }
+  );
   if (res.status !== 201) {
     throw new Error("Unable to modify Questions");
   }
