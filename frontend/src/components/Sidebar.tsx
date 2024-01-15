@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext"; 
+import { useAuth } from "../context/AuthContext";
 
 const Sidebar = () => {
   const auth = useAuth();
@@ -8,7 +8,6 @@ const Sidebar = () => {
       style={{
         height: "30vh",
         width: "20vw",
-        position: "fixed",
         marginLeft: "5vw",
         marginTop: "10vh",
         backgroundColor: "white",
