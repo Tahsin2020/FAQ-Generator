@@ -5,13 +5,15 @@ import { Link } from "react-router-dom";
 
 const Home = () => {
   let url = location.pathname.split("/");
-  let username = url[-1];
+  let username = url[url.length - 2].split("%20").join(" ");
+
   const [value, setValue] = useState("");
   const [pages, setPages] = useState<any[]>([]);
   useEffect(() => {
     getPages(username)
       .then((data) => {
-        setPages(data.pages);
+        console.log(data);
+        if (data.pages) setPages(data.pages);
       })
       .catch((err) => {
         console.log(err);

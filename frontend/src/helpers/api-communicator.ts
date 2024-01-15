@@ -49,7 +49,7 @@ export const getPages = async (username: String) => {
 };
 
 export const addPage = async (title: String, username: String) => {
-  const res = await axios.post("/pageset/page/add" + username + "", {
+  const res = await axios.post("/pageset/page/add/" + username + "", {
     title,
   });
   if (res.status !== 200) {
@@ -76,7 +76,7 @@ export const modifyQuestions = async (
   username: String
 ) => {
   const res = await axios.post(
-    "/pageset/page/question/modify" + username + "",
+    "/pageset/page/question/modify/" + username + "",
     {
       title,
       Modifiedquestions,

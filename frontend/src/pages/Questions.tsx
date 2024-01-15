@@ -8,12 +8,12 @@ import Button from "@mui/material/Button";
 
 function Questions() {
   let url = location.pathname.split("/");
-  let username = url[-2];
+  let username = url[url.length - 2].split("%20").join(" ");
 
-  let title = url[-1];
+  let title = url[url.length - 1].split("%20").join(" ");
 
   console.log(title);
-  console.log(location.pathname);
+  console.log(username);
 
   const [value, setValue] = useState("");
   var Aria_Hidden = [false];
@@ -49,11 +49,11 @@ function Questions() {
           for (let i = 0; i < Questions.length; i++) {
             Aria_Hidden.push(false);
           }
-          toast.success("Successfully loaded chats", { id: "loadchats" });
+          toast.success("Successfully loaded page", { id: "loadpage" });
         })
         .catch((err) => {
           console.log(err);
-          toast.error("Loading Failed", { id: "loadchats" });
+          toast.error("Loading Failed", { id: "loadpage" });
         });
   }, []);
 
