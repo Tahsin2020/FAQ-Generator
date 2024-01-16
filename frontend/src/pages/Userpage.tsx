@@ -3,7 +3,7 @@ import { addPage, getPages } from "../helpers/api-communicator";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-const Home = () => {
+const Userpage = () => {
   let url = location.pathname.split("/");
   let username = url[url.length - 2].split("%20").join(" ");
 
@@ -105,98 +105,9 @@ const Home = () => {
             </Typography>
           </div>
         </div>
-        {/* <div
-        style={{
-          border: "5px solid black",
-          width: "100%",
-          marginBottom: "10px",
-          backgroundColor: "black",
-        }}
-      >
-        <Typography
-          variant="h2"
-          style={{ marginTop: "2vh", marginLeft: "2vw" }}
-        >
-          Title
-        </Typography>
-        <div style={{ marginLeft: "20vw" }}>
-          <Typography variant="h3" style={{ marginTop: "2vh" }}>
-            Question
-          </Typography>
-          <Typography variant="h3" style={{ marginTop: "2vh" }}>
-            Question
-          </Typography>
-          <Typography
-            variant="h3"
-            style={{ marginTop: "2vh", marginBottom: "2vh" }}
-          >
-            Question
-          </Typography>
-        </div>
-      </div>
-
-      <div
-        style={{
-          border: "5px solid black",
-          width: "100%",
-          marginBottom: "10px",
-          backgroundColor: "black",
-        }}
-      >
-        <Typography
-          variant="h2"
-          style={{ marginTop: "2vh", marginLeft: "2vw" }}
-        >
-          Title
-        </Typography>
-        <div style={{ marginLeft: "20vw" }}>
-          <Typography variant="h3" style={{ marginTop: "2vh" }}>
-            Question
-          </Typography>
-          <Typography variant="h3" style={{ marginTop: "2vh" }}>
-            Question
-          </Typography>
-          <Typography
-            variant="h3"
-            style={{ marginTop: "2vh", marginBottom: "2vh" }}
-          >
-            Question
-          </Typography>
-        </div>
-      </div>
-
-      <div
-        style={{
-          border: "5px solid black",
-          width: "100%",
-          marginBottom: "10px",
-          backgroundColor: "black",
-        }}
-      >
-        <Typography
-          variant="h2"
-          style={{ marginTop: "2vh", marginLeft: "2vw" }}
-        >
-          Title
-        </Typography>
-        <div style={{ marginLeft: "20vw" }}>
-          <Typography variant="h3" style={{ marginTop: "2vh" }}>
-            Question
-          </Typography>
-          <Typography variant="h3" style={{ marginTop: "2vh" }}>
-            Question
-          </Typography>
-          <Typography
-            variant="h3"
-            style={{ marginTop: "2vh", marginBottom: "2vh" }}
-          >
-            Question
-          </Typography>
-        </div>
-      </div> */}
       </div>
     </>
   );
 };
 
-export default Home;
+export default Userpage;
