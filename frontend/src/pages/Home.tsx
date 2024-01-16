@@ -43,12 +43,18 @@ const Home = () => {
               <Link to={page.title}>
                 <Typography
                   variant="h2"
-                  style={{ marginTop: "2vh", marginLeft: "2vw" }}
+                  style={{
+                    marginTop: "2vh",
+                    marginLeft: "2vw",
+                    padding: "20px",
+                    backgroundColor: "white",
+                    maxWidth: "50%",
+                  }}
                 >
                   {page.title}
                 </Typography>
               </Link>
-              <div style={{ marginLeft: "20vw" }}>
+              <div style={{ marginLeft: "20vw", backgroundColor: "white" }}>
                 {page.questions.map((question: any, id: number) => {
                   return (
                     <Typography

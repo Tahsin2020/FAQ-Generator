@@ -11,7 +11,7 @@ const Header = () => {
     Click?: () => Promise<void>;
   };
   const LoggedInLinks = [
-    { Link: "/Tahsin Hasan", Title: "My Page" },
+    { Link: "/user/" + values?.user?.username + "/", Title: "My Page" },
     { Link: "/settings", Title: "Settings" },
     { Link: "/login", Title: "Log out", Click: values?.logout },
   ];
@@ -27,7 +27,7 @@ const Header = () => {
     Links = [...Links, ...LoggedOutLinks];
   }
   return (
-    <nav className=" border-gray-200">
+    <nav className=" border-gray-200 bg-black">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <Link to={"/"} className="flex items-center">
           <img src={Earth} className="h-8 mr-3" alt="Website Logo" />
