@@ -2,8 +2,10 @@ import { Typography } from "@mui/material";
 import { addPage, getPages } from "../helpers/api-communicator";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Userpage = () => {
+  const auth = useAuth();
   let url = location.pathname.split("/");
   let username = url[url.length - 2].split("%20").join(" ");
 
@@ -20,9 +22,11 @@ const Userpage = () => {
       });
   }, []);
   const InsertPage = (value: string) => {
-    addPage(value, username);
-    pages.push({ title: value, questions: [] });
-    setValue("");
+    if (auth?.user?.username == username) {
+      addPage(value, username);
+      pages.push({ title: value, questions: [] });
+      setValue("");
+    }
   };
   return (
     <>
@@ -42,12 +46,12 @@ const Userpage = () => {
             >
               <Link to={page.title}>
                 <Typography
+                  className="bg-white hover:bg-gray-300"
                   variant="h2"
                   style={{
                     marginTop: "2vh",
                     marginLeft: "2vw",
                     padding: "20px",
-                    backgroundColor: "white",
                     maxWidth: "50%",
                   }}
                 >
@@ -71,40 +75,47 @@ const Userpage = () => {
             </div>
           );
         })}
-        <div
-          style={{
-            border: "5px solid black",
-            width: "100%",
-            marginBottom: "10px",
-            backgroundColor: "black",
-          }}
-        >
-          <Typography
-            variant="h2"
-            style={{ marginTop: "2vh", marginLeft: "2vw" }}
+        {auth?.user?.username == username ? (
+          <div
+            style={{
+              border: "5px solid black",
+              width: "100%",
+              marginBottom: "10px",
+              backgroundColor: "black",
+            }}
           >
-            <textarea
-              style={{ fontSize: "1em", width: "80vw", height: "15vh" }}
-              value={value}
-              placeholder="Insert title for new page"
-              onChange={(e) => {
-                setValue(e.target.value);
-              }}
-            />
-          </Typography>
-          <div style={{ marginLeft: "20vw" }}>
-            <Typography variant="h3" style={{ marginTop: "2vh" }}>
-              <button
-                style={{ fontSize: "0.75em" }}
-                onClick={() => {
-                  InsertPage(value);
+            <Typography
+              variant="h2"
+              style={{ marginTop: "2vh", marginLeft: "2vw" }}
+            >
+              <textarea
+                style={{ fontSize: "1em", width: "80vw", height: "15vh" }}
+                value={value}
+                placeholder="Insert title for new page"
+                onChange={(e) => {
+                  setValue(e.target.value);
                 }}
-              >
-                Create new page
-              </button>
+              />
             </Typography>
+            <div style={{ marginLeft: "20vw" }}>
+              <Typography variant="h3" style={{ marginTop: "2vh" }}>
+                <button
+                  style={{
+                    backgroundColor: "white",
+                    fontSize: "1em",
+                  }}
+                  onClick={() => {
+                    InsertPage(value);
+                  }}
+                >
+                  Click here to create a new page with inserted title
+                </button>
+              </Typography>
+            </div>
           </div>
-        </div>
+        ) : (
+          <></>
+        )}
       </div>
     </>
   );

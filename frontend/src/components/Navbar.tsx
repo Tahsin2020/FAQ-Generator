@@ -12,7 +12,6 @@ const Header = () => {
   };
   const LoggedInLinks = [
     { Link: "/user/" + values?.user?.username + "/", Title: "My Page" },
-    { Link: "/settings", Title: "Settings" },
     { Link: "/login", Title: "Log out", Click: values?.logout },
   ];
   const LoggedOutLinks = [
@@ -21,11 +20,12 @@ const Header = () => {
   ];
   var Links = [{ Link: "/", Title: "Marketplace" }];
 
-  if (values?.isLoggedIn) {
+  if (values?.isLoggedIn && values?.user?.username) {
     Links = [...Links, ...LoggedInLinks];
   } else {
     Links = [...Links, ...LoggedOutLinks];
   }
+
   return (
     <nav className=" border-gray-200 bg-black">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">

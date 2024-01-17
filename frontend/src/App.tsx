@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Navbar from "./components/Navbar";
 import Market from "./pages/Market";
+import Notfound from "./pages/Notfound";
 
 /* Notes: Add 2 checks in Username and Page, if the Username or Page is invalid, give the NotFound page.
           Access the Username from the url, for both the page and the literal page.
@@ -24,7 +25,7 @@ function App() {
         <Route path="/user" element={<Market />} />
         <Route path="/user/:username/" element={<Userpage />} />
         <Route path="/user/:username/:title" element={<Questions />} />
-        <Route path="*" element={<>Not Found</>} />
+        <Route path="*" element={<Notfound />} />
       </Routes>
     </>
   );
