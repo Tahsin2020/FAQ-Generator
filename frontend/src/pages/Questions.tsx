@@ -49,6 +49,9 @@ function Questions() {
           for (let i = 0; i < Questions.length; i++) {
             Aria_Hidden.push(false);
           }
+          if (Questions.length > 0) {
+            toggleView(0);
+          }
           toast.success("Successfully loaded page", { id: "loadpage" });
         })
         .catch((err) => {
@@ -97,6 +100,7 @@ function Questions() {
             })}
             <div className="FAQ-header">
               <textarea
+                aria-atomic={true}
                 placeholder="Type in a Question here and press enter"
                 value={value}
                 style={{
