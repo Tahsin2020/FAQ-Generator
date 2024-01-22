@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "./Questions.css";
+import "../css/Questions.css";
 import { getQuestions, modifyQuestions } from "../helpers/api-communicator";
 import toast from "react-hot-toast";
 import { Question } from "../types/types";
@@ -75,7 +75,7 @@ function Questions() {
   return (
     <>
       <div className="container">
-        <h2>Frequently Asked Questions</h2>
+        <h2>{title}</h2>
         {!Questions ? (
           <div style={{ width: "90vw" }}>
             The page hasn't loaded yet. If they haven't loaded even after
@@ -104,6 +104,9 @@ function Questions() {
                 placeholder="Type in a Question here and press enter"
                 value={value}
                 style={{
+                  paddingTop: "10px",
+                  paddingLeft: "10px",
+                  border: "2px solid",
                   width: "90vw",
                   height: "20vh",
                 }}
@@ -118,7 +121,7 @@ function Questions() {
                       ids: [],
                     };
                     Questions.push(ModifiedQuestions);
-                    setValue("");
+                    setValue("Type in a Question here and press enter");
                   }
                 }}
               />

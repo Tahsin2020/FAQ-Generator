@@ -32,7 +32,7 @@ const Header = () => {
         <Link to={"/"} className="flex items-center">
           <img src={Earth} className="h-8 mr-3" alt="Website Logo" />
           <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
-            Alliance for Projects
+            Custom FAQ Generator
           </span>
         </Link>
         <button
