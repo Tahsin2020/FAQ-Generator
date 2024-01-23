@@ -58,6 +58,31 @@ export const addPage = async (title: String, username: String) => {
   const data = await res.data;
   return data;
 };
+export const deletePage = async (title: String, username: String) => {
+  const res = await axios.post("/pageset/page/delete/" + username + "", {
+    title,
+  });
+  if (res.status !== 200) {
+    throw new Error("Unable to delete page");
+  }
+  const data = await res.data;
+  return data;
+};
+export const modifyPageTitle = async (
+  old_title: String,
+  new_title: String,
+  username: String
+) => {
+  const res = await axios.post("/pageset/page/modifyTitle/" + username + "", {
+    old_title,
+    new_title,
+  });
+  if (res.status !== 200) {
+    throw new Error("Unable to modify page title");
+  }
+  const data = await res.data;
+  return data;
+};
 
 export const getQuestions = async (title: String, username: String) => {
   const res = await axios.get(

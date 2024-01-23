@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import { addPage, getPages } from "../helpers/api-communicator";
+import { addPage, deletePage, getPages } from "../helpers/api-communicator";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -44,26 +44,59 @@ const Userpage = () => {
               }}
               key={id}
             >
-              <Link to={page.title}>
+              <div style={{ display: "flex" }}>
                 <Typography
                   className="bg-white hover:bg-gray-300"
                   variant="h2"
                   style={{
                     marginTop: "2vh",
                     marginLeft: "2vw",
+                    marginRight: "30%",
                     padding: "20px",
-                    maxWidth: "50%",
+                    width: "50%",
                   }}
                 >
-                  {page.title}
+                  <Link to={page.title} style={{ fontFamily: "sans-serif" }}>
+                    {page.title}
+                  </Link>
                 </Typography>
-              </Link>
+
+                {auth?.user?.username == username ? (
+                  <>
+                    <button
+                      style={{
+                        color: "white",
+                        fontSize: "2em",
+                        padding: "20px",
+                      }}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      style={{
+                        color: "white",
+                        fontSize: "2em",
+                        padding: "20px",
+                      }}
+                      onClick={() => {
+                        deletePage(page.title, username);
+                        pages.splice(id, 1);
+                        setPages([...pages]);
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </>
+                ) : (
+                  <></>
+                )}
+              </div>
               <div style={{ marginLeft: "20vw", backgroundColor: "white" }}>
                 {page.questions.map((question: any, id: number) => {
                   return (
                     <Typography
                       variant="h3"
-                      style={{ marginTop: "2vh" }}
+                      style={{ marginTop: "2vh", padding: "10px" }}
                       key={id}
                     >
                       {" "}

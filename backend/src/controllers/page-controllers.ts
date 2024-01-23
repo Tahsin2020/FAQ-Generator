@@ -76,3 +76,32 @@ export const deletePage = async (
     return res.status(200).json({ message: "ERROR", cause: error.message });
   }
 };
+
+// Modify/Delete the question collection
+export const modifyPageTitle = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { username } = req.params;
+  const { old_title, new_title } = req.body;
+  try {
+    //gets the profile
+    const pageset = await PageSet.findOne({ username: username });
+    const pages = pageset.pages;
+
+    for (let i = 0; i < pages.length; i++) {
+      if (pages[i].title == old_title) {
+        pages[i].title = new_title;
+        break;
+      }
+    }
+
+    await pageset.save();
+
+    return res.status(200).json({ message: "OK" });
+  } catch (error) {
+    console.log(error);
+    return res.status(200).json({ message: "ERROR", cause: error.message });
+  }
+};

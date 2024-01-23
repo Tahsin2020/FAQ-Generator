@@ -5,8 +5,11 @@ import toast from "react-hot-toast";
 import { Question } from "../types/types";
 import Header from "../components/Header";
 import Button from "@mui/material/Button";
+import { useAuth } from "../context/AuthContext";
 
 function Questions() {
+  const auth = useAuth();
+
   let url = location.pathname.split("/");
   let username = url[url.length - 2].split("%20").join(" ");
 
@@ -98,52 +101,63 @@ function Questions() {
                 </>
               );
             })}
-            <div className="FAQ-header">
-              <textarea
-                aria-atomic={true}
-                placeholder="Type in a Question here and press enter"
-                value={value}
-                style={{
-                  paddingTop: "10px",
-                  paddingLeft: "10px",
-                  border: "2px solid",
-                  width: "90vw",
-                  height: "20vh",
-                }}
-                onChange={(e) => {
-                  setValue(e.target.value);
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    var ModifiedQuestions = {
-                      heading: value,
-                      subheadings: [],
-                      ids: [],
-                    };
-                    Questions.push(ModifiedQuestions);
-                    setValue("Type in a Question here and press enter");
-                  }
-                }}
-              />
-            </div>
+            {auth?.user?.username == username ? (
+              <></>
+            ) : (
+              <div className="FAQ-header">
+                <textarea
+                  aria-atomic={true}
+                  placeholder="Type in a Question here and press enter"
+                  value={value}
+                  style={{
+                    paddingTop: "10px",
+                    paddingLeft: "10px",
+                    border: "2px solid",
+                    width: "90vw",
+                    height: "20vh",
+                  }}
+                  onChange={(e) => {
+                    setValue(e.target.value);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      var ModifiedQuestions = {
+                        heading: value,
+                        subheadings: [],
+                        ids: [],
+                      };
+                      Questions.push(ModifiedQuestions);
+                      setValue("Type in a Question here and press enter");
+                    }
+                  }}
+                />
+              </div>
+            )}
           </div>
         )}
-        {!Questions ? (
+
+        {auth?.user?.username == username ? (
           <></>
         ) : (
-          <div
-            style={{
-              marginTop: "10vh",
-              marginLeft: "25w",
-              display: "flex",
-              alignContent: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Button variant="contained" onClick={UpdatePage}>
-              Save Page
-            </Button>
-          </div>
+          <>
+            {!Questions ? (
+              <></>
+            ) : (
+              <div
+                style={{
+                  marginTop: "10vh",
+                  marginLeft: "25w",
+                  display: "flex",
+                  alignContent: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Button variant="contained" onClick={UpdatePage}>
+                  Save Page
+                </Button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </>
