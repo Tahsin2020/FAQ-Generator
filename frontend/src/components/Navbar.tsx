@@ -18,7 +18,7 @@ const Header = () => {
     { Link: "/signup", Title: "Sign Up" },
     { Link: "/login", Title: "Login" },
   ];
-  var Links = [{ Link: "/", Title: "Marketplace" }];
+  var Links = [{ Link: "/", Title: "Landing Page" }];
 
   if (values?.isLoggedIn && values?.user?.username) {
     Links = [...Links, ...LoggedInLinks];
