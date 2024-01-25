@@ -90,6 +90,7 @@ function Questions() {
               return (
                 <>
                   <Header
+                    username={username}
                     key={id}
                     question={question}
                     id={id}
@@ -101,7 +102,7 @@ function Questions() {
                 </>
               );
             })}
-            {auth?.user?.username == username ? (
+            {auth?.user?.username !== username ? (
               <></>
             ) : (
               <div className="FAQ-header">
@@ -136,7 +137,7 @@ function Questions() {
           </div>
         )}
 
-        {auth?.user?.username == username ? (
+        {auth?.user?.username !== username ? (
           <></>
         ) : (
           <>

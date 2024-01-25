@@ -1,5 +1,10 @@
 import { Typography } from "@mui/material";
-import { addPage, deletePage, getPages } from "../helpers/api-communicator";
+import {
+  addPage,
+  deletePage,
+  getPages,
+  modifyPageTitle,
+} from "../helpers/api-communicator";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -11,11 +16,18 @@ const Userpage = () => {
 
   const [value, setValue] = useState("");
   const [pages, setPages] = useState<any[]>([]);
+  const [modifyCheck, setmodifyCheck] = useState<boolean[]>([]);
+  const [newTitle, setnewTitle] = useState("");
   useEffect(() => {
     getPages(username)
       .then((data) => {
-        console.log(data);
         if (data.pages) setPages(data.pages);
+        length = data.pages.length;
+        setmodifyCheck([]);
+        for (let i = 0; i < length; i++) {
+          modifyCheck.push(false);
+        }
+        setmodifyCheck([...modifyCheck]);
       })
       .catch((err) => {
         console.log(err);
@@ -44,53 +56,90 @@ const Userpage = () => {
               }}
               key={id}
             >
-              <div style={{ display: "flex" }}>
-                <Typography
-                  className="bg-white hover:bg-gray-300"
-                  variant="h2"
+              {modifyCheck[id] == true ? (
+                <textarea
+                  value={newTitle}
+                  placeholder="Type your new Title here"
                   style={{
                     marginTop: "2vh",
                     marginLeft: "2vw",
-                    marginRight: "30%",
                     padding: "20px",
                     width: "50%",
+                    fontSize: "4em",
+                    fontFamily: "sans-serif",
                   }}
-                >
-                  <Link to={page.title} style={{ fontFamily: "sans-serif" }}>
-                    {page.title}
-                  </Link>
-                </Typography>
+                  onChange={(e) => {
+                    setnewTitle(e.target.value);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      modifyPageTitle(page.title, newTitle, username);
+                      setnewTitle("Type your new Title here");
+                      page.title = newTitle;
+                      setPages([...pages]);
+                      modifyCheck[id] = false;
+                      setmodifyCheck([...modifyCheck]);
+                    }
+                  }}
+                />
+              ) : (
+                <div style={{ display: "flex" }}>
+                  <Typography
+                    className="bg-white hover:bg-gray-300"
+                    variant="h2"
+                    style={{
+                      marginTop: "2vh",
+                      marginLeft: "2vw",
+                      marginRight: "30%",
+                      padding: "20px",
+                      width: "50%",
+                    }}
+                  >
+                    <Link to={page.title} style={{ fontFamily: "sans-serif" }}>
+                      {page.title}
+                    </Link>
+                  </Typography>
 
-                {auth?.user?.username == username ? (
-                  <>
-                    <button
-                      style={{
-                        color: "white",
-                        fontSize: "2em",
-                        padding: "20px",
-                      }}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      style={{
-                        color: "white",
-                        fontSize: "2em",
-                        padding: "20px",
-                      }}
-                      onClick={() => {
-                        deletePage(page.title, username);
-                        pages.splice(id, 1);
-                        setPages([...pages]);
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </>
-                ) : (
-                  <></>
-                )}
-              </div>
+                  {auth?.user?.username == username ? (
+                    <>
+                      <button
+                        onClick={() => {
+                          console.log(modifyCheck);
+                          for (let i = 0; i < length; i++) {
+                            modifyCheck[i] = false;
+                          }
+                          modifyCheck[id] = true;
+                          setmodifyCheck([...modifyCheck]);
+                          setnewTitle(page.title);
+                        }}
+                        style={{
+                          color: "white",
+                          fontSize: "2em",
+                          padding: "20px",
+                        }}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        style={{
+                          color: "white",
+                          fontSize: "2em",
+                          padding: "20px",
+                        }}
+                        onClick={() => {
+                          deletePage(page.title, username);
+                          pages.splice(id, 1);
+                          setPages([...pages]);
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                </div>
+              )}
               <div style={{ marginLeft: "20vw", backgroundColor: "white" }}>
                 {page.questions.map((question: any, id: number) => {
                   return (

@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Question } from "../types/types";
+import { useAuth } from "../context/AuthContext";
 
 type Props = {
+  username: String;
   question: Question;
   id: number;
   Aria_Hidden: boolean;
@@ -11,6 +13,7 @@ type Props = {
 };
 
 const Header = ({
+  username,
   question,
   id,
   Aria_Hidden,
@@ -33,6 +36,7 @@ const Header = ({
     setmodifyValue(question.subheadings[id].toString());
     setModifying(id);
   };
+  const auth = useAuth();
 
   return (
     // Must add code to automatically replace entered headers (with _) to a space
@@ -68,23 +72,29 @@ const Header = ({
           <div className="FAQ-title">{question.heading}</div>
         )}
 
-        <button
-          className="icon ml"
-          onClick={() => {
-            setmodifyHeaderValue(question.heading.toString());
-            setModifyingHeader(true);
-          }}
-        >
-          Modify
-        </button>
-        <button
-          className="icon mr"
-          onClick={() => {
-            DeleteHeading(id);
-          }}
-        >
-          Delete
-        </button>
+        {auth?.user?.username !== username ? (
+          <></>
+        ) : (
+          <>
+            <button
+              className="icon ml"
+              onClick={() => {
+                setmodifyHeaderValue(question.heading.toString());
+                setModifyingHeader(true);
+              }}
+            >
+              Modify
+            </button>
+            <button
+              className="icon mr"
+              onClick={() => {
+                DeleteHeading(id);
+              }}
+            >
+              Delete
+            </button>
+          </>
+        )}
         <div className="icon" aria-hidden="true"></div>
       </button>
       {!Aria_Hidden ? (
@@ -94,75 +104,94 @@ const Header = ({
           {question?.subheadings.map((subheading, id: number) => {
             if (modifying == id)
               return (
-                <p className="FAQ-subheader" key={id}>
-                  <textarea
-                    placeholder="Change Text here and press enter"
-                    value={modifyvalue}
-                    style={{
-                      width: "100%",
-                      height: "20vh",
-                    }}
-                    onChange={(e) => {
-                      setmodifyValue(e.target.value);
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        question.subheadings[id] = modifyvalue;
-                        setmodifyValue("");
-                        setModifying(undefined);
-                      }
-                    }}
-                  />
-                </p>
+                <>
+                  {auth?.user?.username !== username ? (
+                    <></>
+                  ) : (
+                    <p className="FAQ-subheader" key={id}>
+                      <textarea
+                        placeholder="Change Text here and press enter"
+                        value={modifyvalue}
+                        style={{
+                          width: "100%",
+                          height: "20vh",
+                        }}
+                        onChange={(e) => {
+                          setmodifyValue(e.target.value);
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            question.subheadings[id] = modifyvalue;
+                            setmodifyValue("");
+                            setModifying(undefined);
+                          }
+                        }}
+                      />
+                    </p>
+                  )}
+                </>
               );
             return (
               <div style={{ display: "flex" }}>
                 <p key={id} className="FAQ-subheader">
                   {subheading}
                 </p>
-                <button
-                  className="modify"
-                  onClick={() => {
-                    ModifySubheading(id);
-                  }}
-                >
-                  Modify
-                </button>
-                <button
-                  className="delete"
-                  onClick={() => {
-                    DeleteSubHeading(id);
-                  }}
-                >
-                  Delete
-                </button>
+                {auth?.user?.username !== username ? (
+                  <></>
+                ) : (
+                  <>
+                    <button
+                      style={{ padding: "20px" }}
+                      className="modify"
+                      onClick={() => {
+                        ModifySubheading(id);
+                      }}
+                    >
+                      Modify
+                    </button>
+                    <button
+                      style={{ padding: "20px" }}
+                      className="delete"
+                      onClick={() => {
+                        DeleteSubHeading(id);
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </>
+                )}
               </div>
             );
           })}
-          <p className="FAQ-subheader">
-            <textarea
-              placeholder="Type in an answer here to the above question and press enter"
-              value={value}
-              style={{
-                paddingTop: "10px",
-                paddingLeft: "10px",
-                border: "2px solid",
-                width: "100%",
-                height: "20vh",
-              }}
-              onChange={(e) => {
-                setValue(e.target.value);
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  question.subheadings.push(value);
-                  setValue(
-                    "Type in an answer here to the above question and press enter"
-                  );
-                }
-              }}
-            />
-          </p>
+
+          {auth?.user?.username !== username ? (
+            <></>
+          ) : (
+            <p className="FAQ-subheader">
+              <textarea
+                placeholder="Type in an answer here to the above question and press enter"
+                value={value}
+                style={{
+                  paddingTop: "10px",
+                  paddingLeft: "10px",
+                  border: "2px solid",
+                  width: "100%",
+                  height: "20vh",
+                }}
+                onChange={(e) => {
+                  setValue(e.target.value);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    question.subheadings.push(value);
+                    setValue(
+                      "Type in an answer here to the above question and press enter"
+                    );
+                  }
+                }}
+              />
+            </p>
+          )}
         </div>
       )}
     </div>
