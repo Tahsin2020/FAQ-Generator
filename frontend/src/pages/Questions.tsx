@@ -6,6 +6,7 @@ import { Question } from "../types/types";
 import Header from "../components/Header";
 import Button from "@mui/material/Button";
 import { useAuth } from "../context/AuthContext";
+import Notfound from "./Notfound";
 
 function Questions() {
   const auth = useAuth();
@@ -18,6 +19,7 @@ function Questions() {
   console.log(title);
   console.log(username);
 
+  const [error, setError] = useState(false);
   const [value, setValue] = useState("");
   var Aria_Hidden = [false];
   const [access, setAccess] = useState(false);
@@ -59,6 +61,7 @@ function Questions() {
         })
         .catch((err) => {
           console.log(err);
+          setError(true);
           toast.error("Loading Failed", { id: "loadpage" });
         });
   }, []);
@@ -77,90 +80,96 @@ function Questions() {
   }
   return (
     <>
-      <div className="container">
-        <h2>{title}</h2>
-        {!Questions ? (
-          <div style={{ width: "90vw" }}>
-            The page hasn't loaded yet. If they haven't loaded even after
-            waiting a minute, reload the page or check your url.
-          </div>
-        ) : (
-          <div className="FAQ">
-            {Questions.map((question: Question, id: number) => {
-              return (
-                <>
-                  <Header
-                    username={username}
-                    key={id}
-                    question={question}
-                    id={id}
-                    Aria_Hidden={Aria_Hidden_Array[id]}
-                    toggleView={toggleView}
-                    DeleteHeading={DeleteHeading}
-                    ModifyHeading={ModifyHeading}
-                  />
-                </>
-              );
-            })}
+      {error ? (
+        <Notfound />
+      ) : (
+        <>
+          <div className="container">
+            <h2>{title}</h2>
+            {!Questions ? (
+              <div style={{ width: "90vw" }}>
+                The page hasn't loaded yet. If they haven't loaded even after
+                waiting a minute, reload the page or check your url.
+              </div>
+            ) : (
+              <div className="FAQ">
+                {Questions.map((question: Question, id: number) => {
+                  return (
+                    <>
+                      <Header
+                        username={username}
+                        key={id}
+                        question={question}
+                        id={id}
+                        Aria_Hidden={Aria_Hidden_Array[id]}
+                        toggleView={toggleView}
+                        DeleteHeading={DeleteHeading}
+                        ModifyHeading={ModifyHeading}
+                      />
+                    </>
+                  );
+                })}
+                {auth?.user?.username !== username ? (
+                  <></>
+                ) : (
+                  <div className="FAQ-header">
+                    <textarea
+                      aria-atomic={true}
+                      placeholder="Type in a Question here and press enter"
+                      value={value}
+                      style={{
+                        paddingTop: "10px",
+                        paddingLeft: "10px",
+                        border: "2px solid",
+                        width: "90vw",
+                        height: "20vh",
+                      }}
+                      onChange={(e) => {
+                        setValue(e.target.value);
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          var ModifiedQuestions = {
+                            heading: value,
+                            subheadings: [],
+                            ids: [],
+                          };
+                          Questions.push(ModifiedQuestions);
+                          setValue("Type in a Question here and press enter");
+                        }
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
+
             {auth?.user?.username !== username ? (
               <></>
             ) : (
-              <div className="FAQ-header">
-                <textarea
-                  aria-atomic={true}
-                  placeholder="Type in a Question here and press enter"
-                  value={value}
-                  style={{
-                    paddingTop: "10px",
-                    paddingLeft: "10px",
-                    border: "2px solid",
-                    width: "90vw",
-                    height: "20vh",
-                  }}
-                  onChange={(e) => {
-                    setValue(e.target.value);
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      var ModifiedQuestions = {
-                        heading: value,
-                        subheadings: [],
-                        ids: [],
-                      };
-                      Questions.push(ModifiedQuestions);
-                      setValue("Type in a Question here and press enter");
-                    }
-                  }}
-                />
-              </div>
+              <>
+                {!Questions ? (
+                  <></>
+                ) : (
+                  <div
+                    style={{
+                      marginTop: "10vh",
+                      marginLeft: "25w",
+                      display: "flex",
+                      alignContent: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Button variant="contained" onClick={UpdatePage}>
+                      Save Page
+                    </Button>
+                  </div>
+                )}
+              </>
             )}
           </div>
-        )}
-
-        {auth?.user?.username !== username ? (
-          <></>
-        ) : (
-          <>
-            {!Questions ? (
-              <></>
-            ) : (
-              <div
-                style={{
-                  marginTop: "10vh",
-                  marginLeft: "25w",
-                  display: "flex",
-                  alignContent: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Button variant="contained" onClick={UpdatePage}>
-                  Save Page
-                </Button>
-              </div>
-            )}
-          </>
-        )}
-      </div>
+        </>
+      )}
     </>
   );
 }
