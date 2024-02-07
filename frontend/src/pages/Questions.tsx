@@ -73,10 +73,7 @@ function Questions() {
       if (id == i) Aria_Hidden[i] = true;
       else Aria_Hidden[i] = false;
     }
-    // I don't understand why this works
     setAria_Hidden_Array([...Aria_Hidden]);
-    // But this doesn't work
-    //setAria_Hidden_Array(Aria_Hidden);
   }
   return (
     <>
