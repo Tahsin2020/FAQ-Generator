@@ -5,4 +5,8 @@ This is a Frequently Asked Questions Page Generator website, where one can direc
 
 You have to add your own mongodb url in a .env file within the backend folder.
 
+![image](https://github.com/Tahsin2020/FAQ-Generator/assets/62449141/de2a896f-afd1-4c2d-958c-b2dec157763d)
+
+![image](https://github.com/Tahsin2020/FAQ-Generator/assets/62449141/259eaa8d-065f-44d3-8d9e-75cc62cb0ccc)
+
 Now you can make multiple pages - so you can set up multiple FAQ pages. One can also have multiple accounts. This includes all of the CRUD functionality, and secures the data in the backend.
