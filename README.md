@@ -1,7 +1,7 @@
 # FAQ-Generator
 This is a Frequently Asked Questions Page Generator website, where one can directly input Questions and Answers in a Page like the one shown below. One question can also reference other questions for continuity between ideas. This is made using the MERN stack, MongoDB, Express.JS, React. Node.JS. 
 
-![image](https://github.com/Tahsin2020/FAQ-Generator/assets/62449141/e970798a-4b1d-480c-af22-2840b2dfd542)
+![image](https://github.com/Tahsin2020/FAQ-Generator/assets/62449141/aaa6c64d-723a-4938-b6e2-d9bd9f6e4f59)
 
 You have to add your own mongodb url in a .env file within the backend folder.
 
